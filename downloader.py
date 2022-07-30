@@ -9,6 +9,8 @@ def download_img(img_url: str, save_path: str):
     Path(save_path).mkdir(parents=True, exist_ok=True)
     img_name = search_full_name_img(img_url)
 
+    print(img_name)
+
     response = requests.get(img_url)
     response.raise_for_status()
 
