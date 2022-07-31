@@ -34,6 +34,15 @@ def get_upload_url(token: str, group_id: str, version_api: str) -> str:
     return upload_url
 
 
+def upload_img(url, img_path):
+    with open(img_path, 'rb') as image:
+        files = {'photo': image}
+        response = requests.post(url, files=files)
+        response.raise_for_status()
+
+        return response.json()
+
+
 if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
@@ -45,3 +54,4 @@ if __name__ == '__main__':
 
     img_data = download_comics_img(DIR_IMG_XKCD)
     upload_url = get_upload_url(token, group_id, version_api)
+    save_data = upload_img(upload_url, img_data['path'])
