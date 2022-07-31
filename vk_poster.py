@@ -43,6 +43,22 @@ def upload_img(url, img_path):
         return response.json()
 
 
+def save_img(token: str, group_id: str, version_api: str, upload_data: dict) -> dict:
+    payload = {
+        'access_token': token,
+        'group_id': group_id,
+        'photo': upload_data['photo'],
+        'server': upload_data['server'],
+        'hash': upload_data['hash'],
+        'v': version_api}
+    url = 'https://api.vk.com/method/photos.saveWallPhoto'
+
+    response = requests.get(url, params=payload)
+    response.raise_for_status()
+
+    return response.json()['response'][0]
+
+
 if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
@@ -54,4 +70,5 @@ if __name__ == '__main__':
 
     img_data = download_comics_img(DIR_IMG_XKCD)
     upload_url = get_upload_url(token, group_id, version_api)
-    save_data = upload_img(upload_url, img_data['path'])
+    upload_data = upload_img(upload_url, img_data['path'])
+    save_data = save_img(token, group_id, version_api, upload_data)
