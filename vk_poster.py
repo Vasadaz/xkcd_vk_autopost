@@ -59,6 +59,20 @@ def save_img(token: str, group_id: str, version_api: str, upload_data: dict) -> 
     return response.json()['response'][0]
 
 
+def post_img(token: str, group_id: str, version_api: str, save_data: dict, comment: str):
+    payload = {
+        'access_token': token,
+        'owner_id': -int(group_id),
+        'from_group': 1,
+        'attachments': f'photo{save_data["owner_id"]}_{save_data["id"]}',
+        'message': comment,
+        'v': version_api}
+    url = 'https://api.vk.com/method/wall.post'
+
+    response = requests.get(url, params=payload)
+    response.raise_for_status()
+
+
 if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
@@ -72,3 +86,4 @@ if __name__ == '__main__':
     upload_url = get_upload_url(token, group_id, version_api)
     upload_data = upload_img(upload_url, img_data['path'])
     save_data = save_img(token, group_id, version_api, upload_data)
+    post_img(token, group_id, version_api, save_data, img_data['comment'])
