@@ -83,6 +83,10 @@ def post_img(token: str, group_id: str, version_api: str, save_data: dict, comme
     response.raise_for_status()
 
 
+def delete_img(path):
+    os.remove(path)
+
+
 if __name__ == '__main__':
     dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
     if os.path.exists(dotenv_path):
@@ -97,3 +101,4 @@ if __name__ == '__main__':
     upload_data = upload_img(upload_url, img_data['path'])
     save_data = save_img(token, group_id, version_api, upload_data)
     post_img(token, group_id, version_api, save_data, img_data['comment'])
+    delete_img(img_data['path'])
