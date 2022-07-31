@@ -9,13 +9,15 @@ def download_img(img_url: str, save_path: str):
     Path(save_path).mkdir(parents=True, exist_ok=True)
     img_name = search_full_name_img(img_url)
 
-    print(img_name)
-
     response = requests.get(img_url)
     response.raise_for_status()
 
-    with open(f"{save_path}/{img_name}", 'wb') as file:
+    img_save_path = f'{save_path}/{img_name}'
+
+    with open(img_save_path, 'wb') as file:
         file.write(response.content)
+
+    return img_save_path
 
 
 def search_full_name_img(url: str) -> str:
