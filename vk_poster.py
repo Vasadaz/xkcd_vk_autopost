@@ -48,9 +48,9 @@ def upload_img(url, img_path):
     with open(img_path, 'rb') as image:
         files = {'photo': image}
         response = requests.post(url, files=files)
-        response.raise_for_status()
+    response.raise_for_status()
 
-        return response.json()
+    return response.json()
 
 
 def save_img(token: str, group_id: str, version_api: str, upload_data: dict) -> dict:
@@ -88,17 +88,18 @@ def delete_img(path):
 
 
 if __name__ == '__main__':
-    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-    if os.path.exists(dotenv_path):
-        load_dotenv(dotenv_path)
+    load_dotenv()
     client_id = os.environ['VK_CLIENT_ID']
     group_id = os.environ['VK_GROUP_ID']
     token = os.environ['VK_TOKEN']
     version_api = os.environ['VK_V_API']
 
     img_data = download_comics_img(DIR_IMG_XKCD)
-    upload_url = get_upload_url(token, group_id, version_api)
-    upload_data = upload_img(upload_url, img_data['path'])
-    save_data = save_img(token, group_id, version_api, upload_data)
-    post_img(token, group_id, version_api, save_data, img_data['comment'])
-    delete_img(img_data['path'])
+
+    try:
+        upload_url = get_upload_url(token, group_id, version_api)
+        upload_data = upload_img(upload_url, img_data['path'])
+        save_data = save_img(token, group_id, version_api, upload_data)
+        post_img(token, group_id, version_api, save_data, img_data['comment'])
+    finally:
+        delete_img(img_data['path'])
