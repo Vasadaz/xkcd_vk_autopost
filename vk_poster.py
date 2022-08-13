@@ -69,7 +69,7 @@ def save_img_in_album(token: str, group_id: str, version_api: str, upload_data: 
     return response.json()['response'][0]
 
 
-def post_img(token: str, group_id: str, version_api: str, save_data: dict, comment: str):
+def post_img_to_wall(token: str, group_id: str, version_api: str, save_data: dict, comment: str):
     payload = {
         'access_token': token,
         'owner_id': -int(group_id),
@@ -100,6 +100,6 @@ if __name__ == '__main__':
         upload_url = get_upload_url(token, group_id, version_api)
         server_upload_resources = upload_img_to_server(upload_url, message_contents['path'])
         album_resources = save_img_in_album(token, group_id, version_api, server_upload_resources)
-        post_img(token, group_id, version_api, album_resources, message_contents['comment'])
+        post_img_to_wall(token, group_id, version_api, album_resources, message_contents['comment'])
     finally:
         delete_img(message_contents['path'])
