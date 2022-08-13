@@ -11,7 +11,7 @@ DIR_IMG_XKCD = 'comics_xkcd'
 
 
 def download_comics_img(save_dir: str) -> dict:
-    comics_random_num = random.randint(0, know_last_comics())
+    comics_random_num = random.randint(0, get_last_comic())
     response = requests.get(f'https://xkcd.com/{comics_random_num}/info.0.json')
     response.raise_for_status()
 
@@ -23,7 +23,7 @@ def download_comics_img(save_dir: str) -> dict:
     return {'path': img_path, 'comment': img_comment}
 
 
-def know_last_comics() -> int:
+def get_last_comic() -> int:
     response = requests.get('https://xkcd.com/info.0.json')
     response.raise_for_status()
 
