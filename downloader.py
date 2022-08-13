@@ -24,6 +24,6 @@ def search_img_full_name(url: str) -> str:
     img_url = urllib.parse.urlsplit(url).path
     unquote_img_url = urllib.parse.unquote(img_url)
     img_file = os.path.split(unquote_img_url)[-1]
-    name_img = "".join(os.path.splitext(img_file))
+    img_full_name = "".join(os.path.splitext(img_file))
 
-    return name_img
+    return img_full_name

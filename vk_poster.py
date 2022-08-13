@@ -39,13 +39,13 @@ def get_upload_url(token: str, group_id: str, version_api: str) -> str:
     response = requests.get(url, params=payload)
     response.raise_for_status()
 
-    upload_url = response.json()['response']['upload_url']
+    upload_server_url = response.json()['response']['upload_url']
 
-    return upload_url
+    return upload_server_url
 
 
-def upload_img(url, img_path):
-    with open(img_path, 'rb') as image:
+def upload_img(url: str, file_path: str) -> dict:
+    with open(file_path, 'rb') as image:
         files = {'photo': image}
         response = requests.post(url, files=files)
     response.raise_for_status()
@@ -83,7 +83,7 @@ def post_img(token: str, group_id: str, version_api: str, save_data: dict, comme
     response.raise_for_status()
 
 
-def delete_img(path):
+def delete_img(path: str) -> None:
     os.remove(path)
 
 
@@ -94,12 +94,12 @@ if __name__ == '__main__':
     token = os.environ['VK_TOKEN']
     version_api = os.environ['VK_V_API']
 
-    img_data = download_comics_img(DIR_IMG_XKCD)
+    message_contents = download_comics_img(DIR_IMG_XKCD)
 
     try:
         upload_url = get_upload_url(token, group_id, version_api)
-        upload_data = upload_img(upload_url, img_data['path'])
-        save_data = save_img(token, group_id, version_api, upload_data)
-        post_img(token, group_id, version_api, save_data, img_data['comment'])
+        server_upload_resources = upload_img(upload_url, message_contents['path'])
+        album_resources = save_img(token, group_id, version_api, server_upload_resources)
+        post_img(token, group_id, version_api, album_resources, message_contents['comment'])
     finally:
-        delete_img(img_data['path'])
+        delete_img(message_contents['path'])
