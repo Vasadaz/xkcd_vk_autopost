@@ -83,7 +83,7 @@ def post_img_to_wall(token: str, group_id: str, version_api: str, save_data: dic
     response.raise_for_status()
 
 
-def delete_img(path: str) -> None:
+def delete_local_img(path: str) -> None:
     os.remove(path)
 
 
@@ -102,4 +102,4 @@ if __name__ == '__main__':
         album_resources = save_img_in_album(token, group_id, version_api, server_upload_resources)
         post_img_to_wall(token, group_id, version_api, album_resources, message_contents['comment'])
     finally:
-        delete_img(message_contents['path'])
+        delete_local_img(message_contents['path'])
