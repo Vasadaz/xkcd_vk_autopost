@@ -44,7 +44,7 @@ def get_upload_url(token: str, group_id: str, version_api: str) -> str:
     return upload_server_url
 
 
-def upload_img(url: str, file_path: str) -> dict:
+def upload_img_to_server(url: str, file_path: str) -> dict:
     with open(file_path, 'rb') as image:
         files = {'photo': image}
         response = requests.post(url, files=files)
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
     try:
         upload_url = get_upload_url(token, group_id, version_api)
-        server_upload_resources = upload_img(upload_url, message_contents['path'])
+        server_upload_resources = upload_img_to_server(upload_url, message_contents['path'])
         album_resources = save_img(token, group_id, version_api, server_upload_resources)
         post_img(token, group_id, version_api, album_resources, message_contents['comment'])
     finally:
