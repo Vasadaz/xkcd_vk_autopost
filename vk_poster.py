@@ -53,7 +53,7 @@ def upload_img_to_server(url: str, file_path: str) -> dict:
     return response.json()
 
 
-def save_img(token: str, group_id: str, version_api: str, upload_data: dict) -> dict:
+def save_img_in_album(token: str, group_id: str, version_api: str, upload_data: dict) -> dict:
     payload = {
         'access_token': token,
         'group_id': group_id,
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     try:
         upload_url = get_upload_url(token, group_id, version_api)
         server_upload_resources = upload_img_to_server(upload_url, message_contents['path'])
-        album_resources = save_img(token, group_id, version_api, server_upload_resources)
+        album_resources = save_img_in_album(token, group_id, version_api, server_upload_resources)
         post_img(token, group_id, version_api, album_resources, message_contents['comment'])
     finally:
         delete_img(message_contents['path'])
