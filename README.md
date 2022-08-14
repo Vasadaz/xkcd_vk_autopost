@@ -1,5 +1,3 @@
-# 
-
 # Автопостинг комиксов [XKCD](https://xkcd.com/) в [группу VK](https://vk.com/autocomics_xkcd)
 
 Проект xkcd_vk_autopost позволяет автоматизировать публикацию рандомного комикса XKCD в вашу 
